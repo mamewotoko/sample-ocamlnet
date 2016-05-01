@@ -104,14 +104,16 @@ let start port =
   (* We set up [lstn_engine] whose only purpose is to create a server socket listening
    * on the specified port. When the socket is set up, [accept] is called.
    *)
-  printf "Listening on port %d\n" port;
+
+printf "Listening on port %d\n" port;
+
   flush stdout;
   let ues = Unixqueue.create_unix_event_system () in
   (* Unixqueue.set_debug_mode true; *)
-  let opts = { Uq_engines.default_listen_options with
+     let opts = { Uq_server.default_listen_options with
      Uq_engines.lstn_reuseaddr = true } in
   let lstn_engine =
-    Uq_engines.listener
+    Uq_server.listener
       (`Socket(`Sock_inet(Unix.SOCK_STREAM, Unix.inet_addr_any, port) ,opts)) ues in
   Uq_engines.when_state ~is_done:(accept ues) lstn_engine;
   (* Start the main event loop. *)
