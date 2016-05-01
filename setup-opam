@@ -1,2 +1,3 @@
 #!/bin/sh
+opam update
 opam install -y ocamlnet
